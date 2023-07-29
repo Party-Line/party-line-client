@@ -25,11 +25,11 @@
     
     <body>
         <div id="pl-head">
-            <nav class="navbar bg-body-primary">
-                <div class="container-fluid d-flex justify-content-between">
+            <nav class="navbar bg-body-primary p-1 ps-0 pe-0">
+                <div class="container-fluid d-flex justify-content-between ps-1 pe-1">
                     <div class="d-flex justify-content-start align-items-center">
                         <i class="fa-solid fa-phone p-2 mt-1"></i>
-                        <span id="pl-title" class="fs-3">Party Line</span>
+                        <span id="pl-title" class="fs-6">Party Line</span>
                     </div>
                     
                     <button class="btn btn-light" type="button" id="pl-toggle" data-toggle="open">
@@ -41,14 +41,14 @@
         
         <div id="pl-body">
             <div id="pl-channels">
-                <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
-                        <div class="fs-5 fw-bold">Public Channels</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary border-top border-secondary pt-1 pb-1 ps-2 pe-2">
+                        <div class="fw-bold">Public Channels</div>
                     </li>
                     
-                    <li class="list-group-item d-flex justify-content-start align-items-center">
+                    <li class="list-group-item d-flex justify-content-start align-items-center py-2">
                         <div class="dropdown me-1">
-                            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-light dropdown-toggle px-2 py-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-sliders"></i>
                                 &nbsp;Sort
                             </button>
@@ -59,28 +59,28 @@
                             </ul>
                         </div>
                         
-                        <button type="button" class="btn btn-light" data-toast="construction">
+                        <button type="button" class="btn btn-light px-2 py-1" data-toast="construction">
                             <i class="fa-solid fa-plus"></i>
                             &nbsp;Add Channel
                         </button>
                     </li>
                     
-                    <button id="pl-channel-1" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <button id="pl-channel-1" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center pt-1 pb-2">
                         General
                         <span class="badge bg-primary rounded-pill">0</span>
                     </button>
                 </ul>
                 
-                <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
-                        <div class="fs-5 fw-bold">My Communities</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary border-top border-secondary pt-1 pb-1 ps-2 pe-2">
+                        <div class="fw-bold">My Communities</div>
                     </li>
                     
-                    <li class="list-group-item d-flex justify-content-start align-items-center">
+                    <li class="list-group-item d-flex justify-content-start align-items-center py-2">
                         <div class="dropdown me-1">
-                            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-sliders"></i>
-                                &nbsp;Sort
+                            <button class="btn btn-light dropdown-toggle  px-2 py-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-sliders small"></i>
+                                <span class="small">&nbsp;Sort</span>
                             </button>
                             
                             <ul class="dropdown-menu">
@@ -89,13 +89,13 @@
                             </ul>
                         </div>
                         
-                        <button type="button" class="btn btn-light" data-toast="construction">
+                        <button type="button" class="btn btn-light  px-2 py-1" data-toast="construction">
                             <i class="fa-solid fa-plus"></i>
                             &nbsp;Add Community
                         </button>
                     </li>
                     
-                    <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-toast="construction">
+                    <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center pt-1 pb-2" data-toast="construction">
                         Hacker Pulp
                         <span class="badge bg-primary rounded-pill">0</span>
                     </button>
@@ -103,27 +103,29 @@
             </div>
             
             <div id="pl-chat" class="d-none overflow-hidden">
-                <ul class="list-group">
-                    <li class="list-group-item d-flex align-items-center list-group-item-secondary row">
-                        <div id="pl-channels-back" class="col text-start text-primary" style="cursor: pointer"><i class="fa-solid fa-chevron-left ms-1"></i>&nbsp;Channels</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex align-items-center list-group-item-secondary border-top border-secondary pt-1 pb-1 ps-2 pe-2 row">
+                        <div id="pl-channels-back" class="col text-start text-primary" style="cursor: pointer">
+                            <i class="fa-solid fa-chevron-left ms-1"></i>&nbsp;Channels
+                        </div>
                         <div class="col text-center fw-bold">General</div>
                         <div class="col text-end text-primary">
-                            <button type="button" class="btn btn-link p-0" data-toast="construction"><i class="fa-solid fa-users me-2"></i></button>
-                            <button type="button" class="btn btn-link p-0" data-toast="construction"><i class="fa-solid fa-ellipsis me-1"></i></button>
+                            <button type="button" class="btn btn-link p-0 me-2" data-toast="construction"><i class="fa-solid fa-users"></i></button>
+                            <button type="button" class="btn btn-link p-0" style="margin-right: 6px" data-toast="construction"><i class="fa-solid fa-ellipsis"></i></button>
                         </div>
                     </li>
                     
                     <li>
-                        <div class="p-3">
-                            <div id="pl-chat-window" class="vstack gap-3" style="height: calc(100vh - 170px)">
-                                <div id="pl-chat-scrollbar" class="text-bg-light p-3 pt-2 overflow-y-scroll" style="height: calc(100% - 95px)">
-                                    <div id="pl-chat-output" class="grid"></div>
+                        <div class="p-2">
+                            <div id="pl-chat-window" class="vstack gap-2" style="height: 70vh">
+                                <div id="pl-chat-scrollbar" class="text-bg-light p-2 pt-1 overflow-y-scroll overflow-x-hidden" style="height: 100%">
+                                    <div id="pl-chat-output" class="grid small"></div>
                                 </div>
 
-                                <div id="pl-chat-input" class="input-group mb-3">
+                                <div id="pl-chat-input" class="input-group input-group-sm mb-3">
                                     <button type="button" class="btn btn-light btn-outline-secondary"><i class="fa-solid fa-file-import"></i></button>
                                     <button type="button" class="btn btn-light btn-outline-secondary"><i class="fa-regular fa-face-smile"></i></button>
-                                    <textarea rows="1" class="form-control form-control-sm"></textarea>
+                                    <textarea rows="1" class="form-control form-control-sm" style="height: 20px"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -135,30 +137,30 @@
                 <div class="container-fluid d-flex justify-content-center">
                     <div class="row g-1">
                         <div class="col">
-                            <button type="button" class="btn btn-primary">
+                            <button type="button" class="btn btn-primary pt-1 pb-1">
                                 <i class="fa-solid fa-comment-dots fa-lg"></i>
-                                <br>Channels
+                                <div class="small">Channels</div>
                             </button>
                         </div>
                         
                         <div class="col">
-                            <button type="button" class="btn btn-light" data-toast="construction">
+                            <button type="button" class="btn btn-light pt-1 pb-1" data-toast="construction">
                                 <i class="fa-solid fa-envelope fa-lg"></i>
-                                <br>Messages
+                                <div class="small">Messages</div>
                             </button>
                         </div>
                         
                         <div class="col">
-                            <button type="button" class="btn btn-light" data-toast="construction">
+                            <button type="button" class="btn btn-light pt-1 pb-1" data-toast="construction">
                                 <i class="fa-solid fa-circle-user fa-lg"></i>
-                                <br>Account
+                                <div class="small">Account</div>
                             </button>
                         </div>
                         
                         <div class="col">
-                            <button type="button" class="btn btn-light" data-toast="construction">
+                            <button type="button" class="btn btn-light pt-1 pb-1" data-toast="construction">
                                 <i class="fa-solid fa-gear fa-lg"></i>
-                                <br>Settings
+                                <div class="small">Settings</div>
                             </button>
                         </div>
                     </div>
