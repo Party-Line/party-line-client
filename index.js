@@ -18,16 +18,16 @@ toastTriggers.map(function (trigger) {
     })
 })
 
-document.querySelector('#pl-toggle').addEventListener('click', function(event) {
+document.querySelector('#pl-minmax').addEventListener('click', function(event) {
     if (document.querySelector('#pl-body').style.display == 'none') {
-        document.querySelector('#pl-toggle i').classList.remove('fa-caret-up')
-        document.querySelector('#pl-toggle i').classList.add('fa-caret-down')
+        document.querySelector('#pl-minmax i').classList.remove('fa-caret-up')
+        document.querySelector('#pl-minmax i').classList.add('fa-caret-down')
         
         document.querySelector('#pl-body').style.display = ''
         document.querySelector('#pl-head nav').classList.remove('fixed-bottom')
     } else {
-        document.querySelector('#pl-toggle i').classList.remove('fa-caret-down')
-        document.querySelector('#pl-toggle i').classList.add('fa-caret-up')
+        document.querySelector('#pl-minmax i').classList.remove('fa-caret-down')
+        document.querySelector('#pl-minmax i').classList.add('fa-caret-up')
         
         document.querySelector('#pl-body').style.display = 'none'
         document.querySelector('#pl-head nav').classList.add('fixed-bottom')
