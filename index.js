@@ -18,7 +18,15 @@ toastTriggers.map(function (trigger) {
     })
 })
 
+window.addEventListener('load', function() {
+    window.postMessage({ action: 'window-loaded' }, '*')
+})
+
 document.querySelector('#pl-minmax').addEventListener('click', function(event) {
+    /* hiding the chat area looks strange inside of a window
+       and so we toggle / minimize the window instead ...
+       
+       TODO: look into re-enabling this if browsers allow panels again
     if (document.querySelector('#pl-body').style.display == 'none') {
         document.querySelector('#pl-minmax i').classList.remove('fa-caret-up')
         document.querySelector('#pl-minmax i').classList.add('fa-caret-down')
@@ -32,6 +40,9 @@ document.querySelector('#pl-minmax').addEventListener('click', function(event) {
         document.querySelector('#pl-body').style.display = 'none'
         document.querySelector('#pl-head nav').classList.add('fixed-bottom')
     }
+    */
+    
+    window.postMessage({ action: 'window-toggle' }, '*')
 })
 
 document.querySelector('#pl-channel-1').addEventListener('click', function(event) {
