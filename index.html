@@ -29,7 +29,7 @@
     </head>
     
     <body>
-        <div id="pl-head">
+        <div id="pl-head" class="d-none">
             <nav class="navbar bg-body-primary px-0 py-1">
                 <div class="container-fluid d-flex justify-content-between ps-1 pe-2">
                     <div class="d-flex justify-content-start align-items-center">
@@ -45,7 +45,21 @@
         </div>
         
         <div id="pl-body">
-            <div id="pl-channels">
+            <div id="pl-login" class="container text-center">
+                <div class="row align-items-center" style="height: calc(100vh - 50px)">
+                    <div class="col">
+                        <div id="pl-login-message">Logging in. Please wait ...</div>
+                        
+                        <div class="pl-spinner mt-3">
+                            <div class="pl-bounce1"></div>
+                            <div class="pl-bounce2"></div>
+                            <div class="pl-bounce3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="pl-channels" class="d-none">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary border-top border-secondary pt-1 pb-1 ps-2 pe-2">
                         <div class="fw-bold">Public Channels</div>
@@ -138,7 +152,7 @@
                 </ul>
             </div>
             
-            <nav class="navbar fixed-bottom bg-body-tertiary">
+            <nav id="pl-foot" class="navbar fixed-bottom bg-body-tertiary d-none">
                 <div class="container-fluid d-flex justify-content-center">
                     <div class="row g-1">
                         <div class="col">
