@@ -22,22 +22,51 @@ window.addEventListener('load', (event) => {
     // let the extension know the window has loaded
     window.postMessage({ action: 'window-loaded' }, '*')
     
-    // get the Discuit cookies for our API calls
-    window.postMessage({ action: 'window-cookies' }, '*')
+    // check if the extension has loaded and login
+    extLoading()
 })
 
-window.addEventListener('ext-window-cookies', (event) => {
-    console.log(event.type, JSON.parse(sessionStorage.getItem('window-cookies')))
+function extLoading() {
+    // has the extension loaded
+    window.postMessage({ action: 'ext-loaded', get: true })
+}
+
+window.addEventListener('ext-loaded', (event) => {
+    let extLoaded = sessionStorage.getItem('ext-loaded')
     
-    // TODO: get / create the user account and login to chat
+    if (extLoaded) {
+        // get the logged in user
+        window.postMessage({ action: 'window-user' }, '*')
+        
+        // get the user's communities
+        window.postMessage({ action: 'window-communities' }, '*')
+    } else {
+        setTimeout(extLoading, 250)
+    }
+})
+
+window.addEventListener('window-user', (event) => {
+    let winUser = sessionStorage.getItem('window-user')
     
-    // pause for 2 seconds so there is no weird blip when the login is fast
-    setTimeout(function() {
-        document.querySelector('#pl-login').classList.add('d-none')
-        document.querySelector('#pl-head').classList.remove('d-none')
-        document.querySelector('#pl-channels').classList.remove('d-none')
-        document.querySelector('#pl-foot').classList.remove('d-none')
-    }, 2000)
+    if (winUser !== null) {
+        console.log('user', JSON.parse(winUser))
+        
+        // pause for 2 seconds so there is no weird blip when the login is fast
+        setTimeout(function() {
+            document.querySelector('#pl-login').classList.add('d-none')
+            document.querySelector('#pl-head').classList.remove('d-none')
+            document.querySelector('#pl-channels').classList.remove('d-none')
+            document.querySelector('#pl-foot').classList.remove('d-none')
+        }, 2000)
+    }
+})
+
+window.addEventListener('window-communities', (event) => {
+    let winCommunities = sessionStorage.getItem('window-communities')
+    
+    if (winCommunities !== null) {
+        console.log('communities', JSON.parse(winCommunities))
+    }
 })
 
 document.querySelector('#pl-minmax').addEventListener('click', (event) => {
