@@ -44,28 +44,47 @@ window.addEventListener('ext-data', (event) => {
     if (extDataJSON !== null) {
         let extData = JSON.parse(extDataJSON)
         
-        // create the web socket connection
-        client.create((event) => {
-            // login and get a JSON web token
-            client.ws.send(client.createMessage(extData.username, 'account-login', function(message) {
-                switch (message.type) {
-                    case 'success' :
-                        // verify the SID before using the token
-                        window.postMessage({
-                            action: 'window-verify',
-                            data: {
-                                sid: extData.sid,
-                                username: extData.username,
-                                jwt: message.content
-                            }
-                        })
-                        
-                        break
-                    default :
-                        // TODO: display an error
-                }
-            }))
-        })
+        // verify we are logged in and have some data
+        if (extData && extData.sid && extData.username) {
+            // create the web socket connection
+            client.create((event) => {
+                // login and get a JSON web token
+                client.ws.send(client.createMessage(extData.username, 'account-login', function(message) {
+                    switch (message.type) {
+                        case 'success' :
+                            // verify the SID before using the token
+                            window.postMessage({
+                                action: 'window-verify',
+                                data: {
+                                    sid: extData.sid,
+                                    username: extData.username,
+                                    jwt: message.content
+                                }
+                            })
+                            
+                            break
+                        default :
+                            document.querySelector('#pl-error-title').innerHTML = 'Login Error'
+                            document.querySelector('#pl-error-body').innerHTML = 'Please close the window and try again.<br>' + message.content
+                            
+                            document.querySelector('#pl-login').classList.add('d-none')
+                            document.querySelector('#pl-error').classList.remove('d-none')
+                    }
+                }))
+            })
+        } else {
+            document.querySelector('#pl-error-title').innerHTML = 'Not Logged In'
+            document.querySelector('#pl-error-body').innerHTML = 'You are not logged into Discuit.<br>Please login and try again.'
+
+            document.querySelector('#pl-login').classList.add('d-none')
+            document.querySelector('#pl-error').classList.remove('d-none')
+        }
+    } else {
+        document.querySelector('#pl-error-title').innerHTML = 'Not Logged In'
+        document.querySelector('#pl-error-body').innerHTML = 'You are not logged into Discuit.<br>Please login and try again.'
+        
+        document.querySelector('#pl-login').classList.add('d-none')
+        document.querySelector('#pl-error').classList.remove('d-none')
     }
 })
 
@@ -74,9 +93,22 @@ window.addEventListener('window-verify', (event) => {
     
     if (verify) {
         // connect to the chat
-        client.ws.send(client.createMessage('', 'account-connect'))
+        client.ws.send(client.createMessage('', 'account-connect', function(message) {
+        switch (message.type) {
+            case 'error' :
+                document.querySelector('#pl-error-title').innerHTML = 'Token Error'
+                document.querySelector('#pl-error-body').innerHTML = 'Please close the window and try again.<br>' + message.content
+                
+                document.querySelector('#pl-login').classList.add('d-none')
+                document.querySelector('#pl-error').classList.remove('d-none')
+        }
+    }))
     } else {
-        // TODO: display an error
+        document.querySelector('#pl-error-title').innerHTML = 'Token Error'
+        document.querySelector('#pl-error-body').innerHTML = 'Please close the window and try again.'
+        
+        document.querySelector('#pl-login').classList.add('d-none')
+        document.querySelector('#pl-error').classList.remove('d-none')
     }
 })
 
