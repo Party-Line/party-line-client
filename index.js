@@ -2,10 +2,6 @@ import * as client from './lib/partyline/client.js'
 
 window.user = null
 
-client.create((event) => {
-    client.ws.send(client.createMessage('', 'account-connect'))
-})
-
 let toastMessages = [].slice.call(document.querySelectorAll('.toast'))
 toastMessages.map(function (message) {
     return new bootstrap.Toast(message)
@@ -35,37 +31,52 @@ window.addEventListener('ext-loaded', (event) => {
     let extLoaded = sessionStorage.getItem('ext-loaded')
     
     if (extLoaded) {
-        // get the logged in user
-        window.postMessage({ action: 'window-user' }, '*')
-        
-        // get the user's communities
-        window.postMessage({ action: 'window-communities' }, '*')
+        // get the extension's data
+        window.postMessage({ action: 'ext-data' }, '*')
     } else {
         setTimeout(extLoading, 250)
     }
 })
 
-window.addEventListener('window-user', (event) => {
-    let winUser = sessionStorage.getItem('window-user')
+window.addEventListener('ext-data', (event) => {
+    let extDataJSON = sessionStorage.getItem('ext-data')
     
-    if (winUser !== null) {
-        console.log('user', JSON.parse(winUser))
+    if (extDataJSON !== null) {
+        let extData = JSON.parse(extDataJSON)
         
-        // pause for 2 seconds so there is no weird blip when the login is fast
-        setTimeout(function() {
-            document.querySelector('#pl-login').classList.add('d-none')
-            document.querySelector('#pl-head').classList.remove('d-none')
-            document.querySelector('#pl-channels').classList.remove('d-none')
-            document.querySelector('#pl-foot').classList.remove('d-none')
-        }, 2000)
+        // create the web socket connection
+        client.create((event) => {
+            // login and get a JSON web token
+            client.ws.send(client.createMessage(extData.username, 'account-login', function(message) {
+                switch (message.type) {
+                    case 'success' :
+                        // verify the SID before using the token
+                        window.postMessage({
+                            action: 'window-verify',
+                            data: {
+                                sid: extData.sid,
+                                username: extData.username,
+                                jwt: message.content
+                            }
+                        })
+                        
+                        break
+                    default :
+                        // TODO: display an error
+                }
+            }))
+        })
     }
 })
 
-window.addEventListener('window-communities', (event) => {
-    let winCommunities = sessionStorage.getItem('window-communities')
+window.addEventListener('window-verify', (event) => {
+    let verify = sessionStorage.getItem('window-verify')
     
-    if (winCommunities !== null) {
-        console.log('communities', JSON.parse(winCommunities))
+    if (verify) {
+        // connect to the chat
+        client.ws.send(client.createMessage('', 'account-connect'))
+    } else {
+        // TODO: display an error
     }
 })
 
