@@ -14,18 +14,25 @@ toastTriggers.map(function (trigger) {
     })
 })
 
+window.retry = function () {
+    document.querySelector('#pl-login').classList.remove('d-none')
+    document.querySelector('#pl-error').classList.add('d-none')
+    
+    window.extLoading()
+}
+
+window.extLoading = function () {
+    // has the extension loaded
+    window.postMessage({ action: 'ext-loaded', get: true })
+}
+
 window.addEventListener('load', (event) => {
     // let the extension know the window has loaded
     window.postMessage({ action: 'window-loaded' }, '*')
     
     // check if the extension has loaded and login
-    extLoading()
+    window.extLoading()
 })
-
-function extLoading() {
-    // has the extension loaded
-    window.postMessage({ action: 'ext-loaded', get: true })
-}
 
 window.addEventListener('ext-loaded', (event) => {
     let extLoaded = sessionStorage.getItem('ext-loaded')
