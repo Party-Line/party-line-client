@@ -145,6 +145,9 @@ document.querySelector('#pl-minmax').addEventListener('click', (event) => {
 document.querySelector('#pl-channel-1').addEventListener('click', (event) => {
     document.querySelector('#pl-channels').classList.add('d-none')
     document.querySelector('#pl-chat').classList.remove('d-none')
+    
+    let scrollbar = document.querySelector('#pl-chat-window #pl-chat-scrollbar')
+    scrollbar.scrollTop = scrollbar.scrollHeight - scrollbar.clientHeight
 })
 
 document.querySelector('#pl-channels-back').addEventListener('click', (event) => {
