@@ -2,6 +2,10 @@
     font-weight: bold;
 }
 
+.pl-chat-message-content {
+    white-space: pre-line;
+}
+
 .pl-spinner {
     margin: 0px auto;
     text-align: center;

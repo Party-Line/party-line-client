@@ -156,7 +156,7 @@ document.querySelector('#pl-channels-back').addEventListener('click', (event) =>
 })
 
 document.querySelector('#pl-chat-window textarea').addEventListener('keydown', (event) => {
-    if (event.keyCode == 13) {
+    if (event.keyCode == 13 && !event.shiftKey) {
         client.ws.send(client.createMessage(event.target.value, 'channel-message'))
         
         event.target.select()
