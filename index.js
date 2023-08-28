@@ -55,8 +55,13 @@ window.addEventListener('ext-data', (event) => {
         if (extData && extData.sid && extData.username) {
             // create the web socket connection
             client.create((event) => {
+                let user = {
+                    username: extData.username,
+                    timezone: new Date().getTimezoneOffset()
+                }
+                
                 // login and get a JSON web token
-                client.ws.send(client.createMessage(extData.username, 'account-login', function(message) {
+                client.ws.send(client.createMessage(user, 'account-login', function(message) {
                     switch (message.type) {
                         case 'success' :
                             // verify the SID before using the token
