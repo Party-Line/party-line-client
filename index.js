@@ -28,7 +28,7 @@ window.extLoading = function () {
 
 window.addEventListener('load', (event) => {
     // let the extension know the window has loaded
-    window.postMessage({ action: 'window-loaded' }, '*')
+    window.postMessage({ action: 'window-loaded' })
     
     // check if the extension has loaded and login
     window.extLoading()
@@ -39,7 +39,7 @@ window.addEventListener('ext-loaded', (event) => {
     
     if (extLoaded) {
         // get the extension's data
-        window.postMessage({ action: 'ext-data' }, '*')
+        window.postMessage({ action: 'ext-data' })
     } else {
         setTimeout(extLoading, 250)
     }
@@ -124,6 +124,11 @@ window.addEventListener('window-verify', (event) => {
     }
 })
 
+window.addEventListener('focus', (event) => {
+    // reset the new message toggle icon
+    window.postMessage({ action: 'window-message' })
+})
+
 document.querySelector('#pl-minmax').addEventListener('click', (event) => {
     /* hiding the chat area looks strange inside of a window
        and so we toggle / minimize the window instead ...
@@ -144,7 +149,7 @@ document.querySelector('#pl-minmax').addEventListener('click', (event) => {
     }
     */
     
-    window.postMessage({ action: 'window-toggle' }, '*')
+    window.postMessage({ action: 'window-toggle' })
 })
 
 document.querySelector('#pl-channel-1').addEventListener('click', (event) => {
