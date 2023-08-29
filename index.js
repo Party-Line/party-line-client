@@ -124,6 +124,12 @@ window.addEventListener('window-verify', (event) => {
     }
 })
 
+window.addEventListener('blur', (event) => {
+    // make sure the window gets minimized when we lose focus
+    // this allows the new message logic to run
+    window.postMessage({ action: 'window-minimize' })
+})
+
 window.addEventListener('focus', (event) => {
     // reset the new message toggle icon
     window.postMessage({ action: 'window-message' })
