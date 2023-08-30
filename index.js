@@ -106,15 +106,15 @@ window.addEventListener('window-verify', (event) => {
     if (verify) {
         // connect to the chat
         client.ws.send(client.createMessage('', 'account-connect', function(message) {
-        switch (message.type) {
-            case 'error' :
-                document.querySelector('#pl-error-title').innerHTML = 'Token Error'
-                document.querySelector('#pl-error-body').innerHTML = 'Please close the window and try again.<br>' + message.content
-                
-                document.querySelector('#pl-login').classList.add('d-none')
-                document.querySelector('#pl-error').classList.remove('d-none')
-        }
-    }))
+            switch (message.type) {
+                case 'error' :
+                    document.querySelector('#pl-error-title').innerHTML = 'Token Error'
+                    document.querySelector('#pl-error-body').innerHTML = 'Please close the window and try again.<br>' + message.content
+                    
+                    document.querySelector('#pl-login').classList.add('d-none')
+                    document.querySelector('#pl-error').classList.remove('d-none')
+            }
+        }))
     } else {
         document.querySelector('#pl-error-title').innerHTML = 'Token Error'
         document.querySelector('#pl-error-body').innerHTML = 'Please close the window and try again.'
@@ -164,6 +164,22 @@ document.querySelector('#pl-channel-1').addEventListener('click', (event) => {
     
     let scrollbar = document.querySelector('#pl-chat-window #pl-chat-scrollbar')
     scrollbar.scrollTop = scrollbar.scrollHeight - scrollbar.clientHeight
+})
+
+document.querySelector('#pl-channel-1-users').addEventListener('click', (event) => {
+    if (document.querySelector('#pl-chat-users').classList.contains('d-none')) {
+        document.querySelector('#pl-chat-window').classList.add('d-none')
+        document.querySelector('#pl-chat-users').classList.remove('d-none')
+        
+        document.querySelector('#pl-channel-1-users i').classList.add('fa-comments')
+        document.querySelector('#pl-channel-1-users i').classList.remove('fa-users')
+    } else {
+        document.querySelector('#pl-chat-users').classList.add('d-none')
+        document.querySelector('#pl-chat-window').classList.remove('d-none')
+        
+        document.querySelector('#pl-channel-1-users i').classList.add('fa-users')
+        document.querySelector('#pl-channel-1-users i').classList.remove('fa-comments')
+    }
 })
 
 document.querySelector('#pl-channels-back').addEventListener('click', (event) => {
