@@ -152,7 +152,8 @@ window.addEventListener('blur', (event) => {
 
 // reset the "new message" icon when we gain focus
 window.addEventListener('focus', (event) => {
-    window.postMessage({ action: 'window-message', value: false })
+    // TODO: needs more testing
+    // window.postMessage({ action: 'window-message' })
 })
 
 /** CHAT WINDOW **/
@@ -178,6 +179,13 @@ document.querySelector('#pl-minmax').addEventListener('click', (event) => {
         
         document.querySelector('#pl-body').style.display = ''
         document.querySelector('#pl-head nav').classList.remove('fixed-bottom')
+        
+        // scroll to the most recent message
+        let scrollbar = document.querySelector('#pl-chat-window #pl-chat-scrollbar')
+        scrollbar.scrollTop = scrollbar.scrollHeight - scrollbar.clientHeight
+        
+        // reset the "new message" icon
+        window.postMessage({ action: 'window-message' })
     } else {
         window.postMessage({ action: 'window-display', value: 'minimize' })
         
