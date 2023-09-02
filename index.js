@@ -1,57 +1,65 @@
 import * as client from './lib/partyline/client.js'
 
 window.user = null
+window.extScriptTimer = null
 
-let toastMessages = [].slice.call(document.querySelectorAll('.toast'))
-toastMessages.map(function (message) {
-    return new bootstrap.Toast(message)
-})
+/** STARTUP PROCESS **/
 
-let toastTriggers = [].slice.call(document.querySelectorAll('[data-toast="construction"]'))
-toastTriggers.map(function (trigger) {
-    trigger.addEventListener('click', (event) => {
-        bootstrap.Toast.getInstance(document.querySelector('#pl-construction')).show()
-    })
-})
-
-window.retry = function () {
-    document.querySelector('#pl-login').classList.remove('d-none')
-    document.querySelector('#pl-error').classList.add('d-none')
-    
-    window.extLoading()
-}
-
-window.extLoading = function () {
-    // has the extension loaded
-    window.postMessage({ action: 'ext-loaded', get: true })
-}
-
+// the window has loaded
 window.addEventListener('load', (event) => {
+    // has the extension's script loaded
+    window.extScript()
+})
+
+// loop until the extension's script has loaded
+window.extScript = function () {
+    // this message will be ignored until the script has loaded
+    window.postMessage({ action: 'ext-script', get: true })
+    
+    extScriptTimer = setTimeout(extScript, 250)
+}
+
+// get the extension's script result
+window.addEventListener('ext-script', (event) => {
+    // no need to check for the value in session storage
+    // any kind of response means the script has loaded
+     
+    clearTimeout(extScriptTimer)
+    
     // let the extension know the window has loaded
     window.postMessage({ action: 'window-loaded' })
     
-    // check if the extension has loaded and login
-    window.extLoading()
+    // has the extension's data loaded
+    window.extLoaded()
 })
 
+// loop until the extension's data has loaded
+window.extLoaded = function () {
+    // has the extension's data loaded
+    window.postMessage({ action: 'ext-loaded', get: true })
+}
+
+// get the extension's loaded result
 window.addEventListener('ext-loaded', (event) => {
     let extLoaded = sessionStorage.getItem('ext-loaded')
     
-    if (extLoaded) {
+    if (extLoaded === 'true') {
         // get the extension's data
         window.postMessage({ action: 'ext-data' })
     } else {
-        setTimeout(extLoading, 250)
+        // not loaded and so try again
+        setTimeout(extLoaded, 250)
     }
 })
 
+// load the extension's data and login
 window.addEventListener('ext-data', (event) => {
     let extDataJSON = sessionStorage.getItem('ext-data')
     
     if (extDataJSON !== null) {
         let extData = JSON.parse(extDataJSON)
         
-        // verify we are logged in and have some data
+        // verify we are logged into Discuit
         if (extData && extData.sid && extData.username) {
             // create the web socket connection
             client.create((event) => {
@@ -61,6 +69,7 @@ window.addEventListener('ext-data', (event) => {
                 }
                 
                 // login and get a JSON web token
+                // TODO: require the client to have a secret / public key
                 client.ws.send(client.createMessage(user, 'account-login', function(message) {
                     switch (message.type) {
                         case 'success' :
@@ -100,10 +109,11 @@ window.addEventListener('ext-data', (event) => {
     }
 })
 
+// the JWT token has been set
 window.addEventListener('window-verify', (event) => {
     let verify = sessionStorage.getItem('window-verify')
     
-    if (verify) {
+    if (verify === 'true') {
         // connect to the chat
         client.ws.send(client.createMessage('', 'account-connect', function(message) {
             switch (message.type) {
@@ -124,38 +134,65 @@ window.addEventListener('window-verify', (event) => {
     }
 })
 
+// reload the extension's data and login again
+window.retry = function () {
+    document.querySelector('#pl-login').classList.remove('d-none')
+    document.querySelector('#pl-error').classList.add('d-none')
+    
+    window.extLoaded()
+}
+
+// minimize the window when we lose focus
 window.addEventListener('blur', (event) => {
-    // make sure the window gets minimized when we lose focus
-    // this allows the new message logic to run
-    window.postMessage({ action: 'window-minimize' })
+    // TODO: make this configurable
+    // if (document.querySelector('#pl-body').style.display != 'none') {
+    //     document.querySelector('#pl-minmax').click()
+    // }
 })
 
+// reset the "new message" icon when we gain focus
 window.addEventListener('focus', (event) => {
-    // reset the new message toggle icon
-    window.postMessage({ action: 'window-message' })
+    window.postMessage({ action: 'window-message', value: false })
+})
+
+/** CHAT WINDOW **/
+
+let toastMessages = [].slice.call(document.querySelectorAll('.toast'))
+toastMessages.map(function (message) {
+    return new bootstrap.Toast(message)
+})
+
+let toastTriggers = [].slice.call(document.querySelectorAll('[data-toast="construction"]'))
+toastTriggers.map(function (trigger) {
+    trigger.addEventListener('click', (event) => {
+        bootstrap.Toast.getInstance(document.querySelector('#pl-construction')).show()
+    })
 })
 
 document.querySelector('#pl-minmax').addEventListener('click', (event) => {
-    /* hiding the chat area looks strange inside of a window
-       and so we toggle / minimize the window instead ...
-       
-       TODO: look into re-enabling this if browsers allow panels again
     if (document.querySelector('#pl-body').style.display == 'none') {
+        window.postMessage({ action: 'window-display', value: 'maximize' })
+        
         document.querySelector('#pl-minmax i').classList.remove('fa-caret-up')
         document.querySelector('#pl-minmax i').classList.add('fa-caret-down')
         
         document.querySelector('#pl-body').style.display = ''
         document.querySelector('#pl-head nav').classList.remove('fixed-bottom')
     } else {
+        window.postMessage({ action: 'window-display', value: 'minimize' })
+        
         document.querySelector('#pl-minmax i').classList.remove('fa-caret-down')
         document.querySelector('#pl-minmax i').classList.add('fa-caret-up')
         
         document.querySelector('#pl-body').style.display = 'none'
         document.querySelector('#pl-head nav').classList.add('fixed-bottom')
     }
-    */
+})
+
+document.querySelector('#pl-close').addEventListener('click', (event) => {
+    //sessionStorage.clear()
     
-    window.postMessage({ action: 'window-toggle' })
+    window.postMessage({ action: 'window-display', value: 'close' })
 })
 
 document.querySelector('#pl-channel-1').addEventListener('click', (event) => {

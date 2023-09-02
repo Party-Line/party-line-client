@@ -30,13 +30,19 @@
             <nav class="navbar bg-body-primary px-0 py-1">
                 <div class="container-fluid d-flex justify-content-between ps-1 pe-2">
                     <div class="d-flex justify-content-start align-items-center">
-                        <span class="small px-2">💬️</span>
+                        <span class="px-2"><img src="icon.png" /></span>
                         <span id="pl-title" class="fs-6">Party Line</span>
                     </div>
                     
-                    <button class="btn btn-light" type="button" id="pl-minmax" data-toggle="open">
-                        <i class="fa-solid fa-caret-down"></i>
-                    </button>
+                    <div>
+                        <button class="btn btn-light" type="button" id="pl-minmax" data-toggle="open">
+                            <i class="fa-solid fa-caret-down"></i>
+                        </button>
+                        
+                        <button class="btn btn-light" type="button" id="pl-close">
+                            <i class="fa-solid fa-close"></i>
+                        </button>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -163,7 +169,7 @@
                 </ul>
             </div>
             
-            <nav id="pl-foot" class="navbar fixed-bottom bg-body-tertiary d-none">
+            <nav id="pl-foot" class="navbar fixed-bottom bg-body-tertiary d-none pb-3">
                 <div class="container-fluid d-flex justify-content-center">
                     <div class="row g-1">
                         <div class="col">
